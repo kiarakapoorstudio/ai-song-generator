@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -139,4 +140,380 @@
 
           <select id="duration">
 
-            <op
+            <option value="1">
+              1 minute — 10 credits
+            </option>
+
+            <option value="2">
+              2 minutes — 20 credits
+            </option>
+
+            <option value="3" selected>
+              3 minutes — 30 credits
+            </option>
+
+            <option value="4">
+              4 minutes — 40 credits
+            </option>
+
+            <option value="5">
+              5 minutes — 50 credits
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="option">
+
+          <label for="genre">
+            Genre
+          </label>
+
+          <select id="genre">
+
+            <option>Pop</option>
+            <option>Punjabi</option>
+            <option>Hip-Hop</option>
+            <option>Rap</option>
+            <option>Lo-fi</option>
+            <option>Rock</option>
+            <option>EDM</option>
+            <option>R&B</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="option">
+
+          <label for="language">
+            Language
+          </label>
+
+          <select id="language">
+
+            <option>Punjabi</option>
+            <option>Hindi</option>
+            <option>English</option>
+            <option>Haryanvi</option>
+            <option>Urdu</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="option">
+
+          <label for="vocals">
+            Vocal Style
+          </label>
+
+          <select id="vocals">
+
+            <option>Deep Male</option>
+            <option>Melodic Male</option>
+            <option>Emotional Male</option>
+            <option>Soft Female</option>
+            <option>Powerful Female</option>
+            <option>Rap Vocal</option>
+            <option>AI Original Voice</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="option">
+
+          <label for="mood">
+            Mood
+          </label>
+
+          <select id="mood">
+
+            <option>Happy</option>
+            <option>Sad</option>
+            <option>Romantic</option>
+            <option selected>Emotional</option>
+            <option>Energetic</option>
+            <option>Chill</option>
+            <option>Dark</option>
+            <option>Hopeful</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="generate"
+        onclick="generateSong()"
+      >
+        <span>✦</span>
+        <span>Generate Song</span>
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- ================================
+       AUTH MODAL
+  ================================= -->
+
+  <div
+    class="modal-overlay"
+    id="authModal"
+  >
+
+    <div class="auth-modal">
+
+      <button
+        class="modal-close"
+        onclick="closeAuthModal()"
+      >
+        ×
+      </button>
+
+
+      <div class="auth-icon">
+        ✦
+      </div>
+
+      <h2>
+        Create your account
+      </h2>
+
+      <p class="auth-description">
+        Sign in or create an account to generate your song.
+        New users receive 60 free credits.
+      </p>
+
+
+      <div class="auth-tabs">
+
+        <button
+          class="auth-tab active"
+          id="loginTab"
+          onclick="switchAuth('login')"
+        >
+          Login
+        </button>
+
+        <button
+          class="auth-tab"
+          id="signupTab"
+          onclick="switchAuth('signup')"
+        >
+          Sign Up
+        </button>
+
+      </div>
+
+
+      <!-- Login -->
+
+      <form
+        id="loginForm"
+        class="auth-form"
+        onsubmit="handleLogin(event)"
+      >
+
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="Email address"
+          required
+        >
+
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Password"
+          required
+        >
+
+        <button type="submit">
+          Login
+        </button>
+
+      </form>
+
+
+      <!-- Signup -->
+
+      <form
+        id="signupForm"
+        class="auth-form hidden"
+        onsubmit="handleSignup(event)"
+      >
+
+        <input
+          type="text"
+          id="signupName"
+          placeholder="Your name"
+          required
+        >
+
+        <input
+          type="email"
+          id="signupEmail"
+          placeholder="Email address"
+          required
+        >
+
+        <input
+          type="password"
+          id="signupPassword"
+          placeholder="Create password"
+          minlength="6"
+          required
+        >
+
+        <button type="submit">
+          Create Account
+        </button>
+
+      </form>
+
+
+      <p class="auth-note">
+        By continuing, you agree to our Terms and Privacy Policy.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================
+       GENERATION PAGE
+  ================================= -->
+
+  <div
+    class="generation-page"
+    id="generationPage"
+  >
+
+    <div class="generation-container">
+
+      <div class="generation-top">
+
+        <button
+          class="back-button"
+          onclick="closeGenerationPage()"
+        >
+          ← Back
+        </button>
+
+        <div class="generation-credit">
+          <span>✦</span>
+          <span id="generationCredits">
+            60
+          </span>
+          credits
+        </div>
+
+      </div>
+
+
+      <div class="generation-content">
+
+        <div class="generation-symbol">
+          ✦
+        </div>
+
+        <div class="generation-status">
+          CREATING YOUR SONG
+        </div>
+
+        <h2 id="generationTitle">
+          Your song is being created
+        </h2>
+
+        <p id="generationDescription">
+          Our AI is preparing your track.
+        </p>
+
+
+        <div class="progress-container">
+
+          <div class="progress-track">
+
+            <div
+              class="progress-bar"
+              id="progressBar"
+            ></div>
+
+          </div>
+
+          <div class="progress-percent">
+            <span id="progressPercent">
+              0
+            </span>%
+          </div>
+
+        </div>
+
+
+        <div class="generation-info">
+
+          <div>
+            <span>Duration</span>
+            <strong id="generationDuration">
+              3 minutes
+            </strong>
+          </div>
+
+          <div>
+            <span>Genre</span>
+            <strong id="generationGenre">
+              Punjabi
+            </strong>
+          </div>
+
+          <div>
+            <span>Language</span>
+            <strong id="generationLanguage">
+              Punjabi
+            </strong>
+          </div>
+
+          <div>
+            <span>Vocals</span>
+            <strong id="generationVocals">
+              Emotional Male
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================
+       FOOTER
+  ================================= -->
+
+  <footer>
+    © 2026 SONARA — AI Music Creation
+  </footer>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
+```
