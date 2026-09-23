@@ -1,7 +1,3 @@
-/* =========================================
-   SONARA AI — MAIN JAVASCRIPT
-========================================= */
-
 let user = JSON.parse(localStorage.getItem("sonaraUser")) || null;
 let pendingGeneration = false;
 
