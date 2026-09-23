@@ -1,52 +1,59 @@
-let user = JSON.parse(
-  localStorage.getItem("sonaraUser")
-) || null;
+let user = JSON.parse(localStorage.getItem("sonaraUser")) || null;
+
+let generationTimer = null;
 
 
-// =========================================
-// DEFAULT CREDITS
-// =========================================
+/* =========================================================
+   DEFAULT USER
+   ========================================================= */
 
-const DEFAULT_CREDITS = 60;
-
-
-// =========================================
-// GET CREDITS
-// =========================================
-
-function getCredits() {
-
-  if (!user) {
-    return DEFAULT_CREDITS;
-  }
-
-  return Number(user.credits);
-
+function createUser(name, email) {
+  return {
+    name: name,
+    email: email,
+    credits: 60,
+    songs: []
+  };
 }
 
 
-// =========================================
-// SAVE USER
-// =========================================
+/* =========================================================
+   SAVE USER
+   ========================================================= */
 
 function saveUser() {
-
-  localStorage.setItem(
-    "sonaraUser",
-    JSON.stringify(user)
-  );
-
+  if (user) {
+    localStorage.setItem(
+      "sonaraUser",
+      JSON.stringify(user)
+    );
+  } else {
+    localStorage.removeItem("sonaraUser");
+  }
 }
 
 
-// =========================================
-// UPDATE HEADER
-// =========================================
+/* =========================================================
+   GET CREDITS
+   ========================================================= */
+
+function getCredits() {
+  if (!user) {
+    return 60;
+  }
+
+  return Number(user.credits) || 0;
+}
+
+
+/* =========================================================
+   UPDATE HEADER
+   ========================================================= */
 
 function updateHeader() {
 
-  const creditsAmount =
-    document.getElementById("creditsAmount");
+  const creditsCount =
+    document.getElementById("creditsCount");
 
   const accountButton =
     document.getElementById("accountButton");
@@ -55,19 +62,13 @@ function updateHeader() {
     document.getElementById("generationCredits");
 
 
-  if (creditsAmount) {
-
-    creditsAmount.textContent =
-      getCredits();
-
+  if (creditsCount) {
+    creditsCount.textContent = getCredits();
   }
 
 
   if (generationCredits) {
-
-    generationCredits.textContent =
-      getCredits();
-
+    generationCredits.textContent = getCredits();
   }
 
 
@@ -76,18 +77,14 @@ function updateHeader() {
     if (user) {
 
       accountButton.textContent =
-        user.name || "Account";
-
-      accountButton.onclick =
-        logoutUser;
+        user.name
+          ? user.name
+          : "Account";
 
     } else {
 
       accountButton.textContent =
         "Sign In";
-
-      accountButton.onclick =
-        openAuthModal;
 
     }
 
@@ -96,44 +93,103 @@ function updateHeader() {
 }
 
 
-// =========================================
-// CHARACTER COUNTER
-// =========================================
+/* =========================================================
+   CHARACTER COUNTER
+   ========================================================= */
 
-const promptInput =
-  document.getElementById("prompt");
+function updateCharacterCount() {
 
-const charCount =
-  document.getElementById("charCount");
+  const prompt =
+    document.getElementById("prompt");
+
+  const counter =
+    document.getElementById("characterCounter");
 
 
-if (promptInput && charCount) {
+  if (!prompt || !counter) {
+    return;
+  }
 
-  promptInput.addEventListener(
-    "input",
-    () => {
 
-      charCount.textContent =
-        `${promptInput.value.length} characters`;
+  const length =
+    prompt.value.length;
 
-    }
-  );
+
+  counter.textContent =
+    `${length} / 1000`;
 
 }
 
 
-// =========================================
-// AUTH MODAL
-// =========================================
+/* =========================================================
+   SONG COST
+   ========================================================= */
+
+function getSongCost() {
+
+  const duration =
+    document.getElementById("duration");
+
+
+  if (!duration) {
+    return 10;
+  }
+
+
+  const minutes =
+    Number(duration.value);
+
+
+  return minutes * 10;
+
+}
+
+
+/* =========================================================
+   UPDATE GENERATE COST
+   ========================================================= */
+
+function updateSongCost() {
+
+  const cost =
+    getSongCost();
+
+
+  const generateCost =
+    document.getElementById("generateCost");
+
+
+  if (generateCost) {
+    generateCost.textContent = cost;
+  }
+
+}
+
+
+/* =========================================================
+   AUTH MODAL
+   ========================================================= */
 
 function openAuthModal() {
 
   const modal =
     document.getElementById("authModal");
 
-  modal.classList.add("show");
 
-  document.body.classList.add("modal-open");
+  if (!modal) {
+    return;
+  }
+
+
+  modal.classList.add("active");
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  showLoginForm();
 
 }
 
@@ -143,18 +199,30 @@ function closeAuthModal() {
   const modal =
     document.getElementById("authModal");
 
-  modal.classList.remove("show");
 
-  document.body.classList.remove("modal-open");
+  if (!modal) {
+    return;
+  }
+
+
+  modal.classList.remove("active");
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  clearAuthMessage();
 
 }
 
 
-// =========================================
-// AUTH TABS
-// =========================================
+/* =========================================================
+   LOGIN FORM
+   ========================================================= */
 
-function switchAuth(type) {
+function showLoginForm() {
 
   const loginForm =
     document.getElementById("loginForm");
@@ -168,35 +236,146 @@ function switchAuth(type) {
   const signupTab =
     document.getElementById("signupTab");
 
+  const title =
+    document.getElementById("authTitle");
 
-  if (type === "login") {
 
-    loginForm.classList.remove("hidden");
+  if (loginForm) {
+    loginForm.style.display = "flex";
+  }
 
-    signupForm.classList.add("hidden");
 
+  if (signupForm) {
+    signupForm.style.display = "none";
+  }
+
+
+  if (loginTab) {
     loginTab.classList.add("active");
+  }
 
+
+  if (signupTab) {
     signupTab.classList.remove("active");
+  }
 
-  } else {
 
-    loginForm.classList.add("hidden");
+  if (title) {
+    title.textContent =
+      "Welcome back";
+  }
 
-    signupForm.classList.remove("hidden");
 
+  clearAuthMessage();
+
+}
+
+
+/* =========================================================
+   SIGNUP FORM
+   ========================================================= */
+
+function showSignupForm() {
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const signupForm =
+    document.getElementById("signupForm");
+
+  const loginTab =
+    document.getElementById("loginTab");
+
+  const signupTab =
+    document.getElementById("signupTab");
+
+  const title =
+    document.getElementById("authTitle");
+
+
+  if (loginForm) {
+    loginForm.style.display = "none";
+  }
+
+
+  if (signupForm) {
+    signupForm.style.display = "flex";
+  }
+
+
+  if (loginTab) {
     loginTab.classList.remove("active");
+  }
 
+
+  if (signupTab) {
     signupTab.classList.add("active");
+  }
 
+
+  if (title) {
+    title.textContent =
+      "Create your account";
+  }
+
+
+  clearAuthMessage();
+
+}
+
+
+/* =========================================================
+   AUTH MESSAGE
+   ========================================================= */
+
+function showAuthMessage(message, type = "") {
+
+  const messageElement =
+    document.getElementById("authMessage");
+
+
+  if (!messageElement) {
+    return;
+  }
+
+
+  messageElement.textContent =
+    message;
+
+
+  messageElement.className =
+    "auth-message";
+
+
+  if (type) {
+    messageElement.classList.add(type);
   }
 
 }
 
 
-// =========================================
-// SIGN UP
-// =========================================
+function clearAuthMessage() {
+
+  const messageElement =
+    document.getElementById("authMessage");
+
+
+  if (!messageElement) {
+    return;
+  }
+
+
+  messageElement.textContent = "";
+
+  messageElement.className =
+    "auth-message";
+
+}
+
+
+/* =========================================================
+   SIGN UP
+   ========================================================= */
 
 function handleSignup(event) {
 
@@ -204,16 +383,41 @@ function handleSignup(event) {
 
 
   const name =
-    document.getElementById("signupName").value.trim();
+    document.getElementById("signupName")
+      ?.value
+      .trim();
+
 
   const email =
-    document.getElementById("signupEmail").value.trim();
+    document.getElementById("signupEmail")
+      ?.value
+      .trim()
+      .toLowerCase();
+
 
   const password =
-    document.getElementById("signupPassword").value;
+    document.getElementById("signupPassword")
+      ?.value;
 
 
   if (!name || !email || !password) {
+
+    showAuthMessage(
+      "Please fill in all fields.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (password.length < 6) {
+
+    showAuthMessage(
+      "Password must contain at least 6 characters.",
+      "error"
+    );
+
     return;
   }
 
@@ -225,34 +429,57 @@ function handleSignup(event) {
     to a backend later.
   */
 
-  user = {
 
-    name: name,
+  user = createUser(
+    name,
+    email
+  );
 
-    email: email,
 
-    credits: DEFAULT_CREDITS
+  /*
+    Store demo login information locally.
+    This is NOT secure authentication.
+  */
 
-  };
+  user.demoPassword = password;
 
 
   saveUser();
 
   updateHeader();
 
-  closeAuthModal();
 
-
-  alert(
-    `Welcome to SONARA, ${name}! You received 60 free credits.`
+  showAuthMessage(
+    "Account created! You received 60 free credits.",
+    "success"
   );
+
+
+  setTimeout(() => {
+
+    closeAuthModal();
+
+    /*
+      If the user originally clicked
+      Generate Song, continue generation.
+    */
+
+    if (window.pendingGeneration) {
+
+      window.pendingGeneration = false;
+
+      generateSong();
+
+    }
+
+  }, 800);
 
 }
 
 
-// =========================================
-// LOGIN
-// =========================================
+/* =========================================================
+   LOGIN
+   ========================================================= */
 
 function handleLogin(event) {
 
@@ -260,10 +487,24 @@ function handleLogin(event) {
 
 
   const email =
-    document.getElementById("loginEmail").value.trim();
+    document.getElementById("loginEmail")
+      ?.value
+      .trim()
+      .toLowerCase();
 
 
-  if (!email) {
+  const password =
+    document.getElementById("loginPassword")
+      ?.value;
+
+
+  if (!email || !password) {
+
+    showAuthMessage(
+      "Please enter your email and password.",
+      "error"
+    );
+
     return;
   }
 
@@ -271,31 +512,34 @@ function handleLogin(event) {
   /*
     FRONTEND DEMO LOGIN
 
-    Real authentication will be added later.
+    If a previous SONARA account exists,
+    restore it.
+
+    Otherwise a demo account is created.
   */
 
 
-  const storedUser =
+  const savedUser =
     JSON.parse(
       localStorage.getItem("sonaraUser")
     );
 
 
-  if (storedUser) {
+  if (
+    savedUser &&
+    savedUser.email === email
+  ) {
 
-    user = storedUser;
+    user = savedUser;
 
   } else {
 
-    user = {
+    user = createUser(
+      email.split("@")[0],
+      email
+    );
 
-      name: email.split("@")[0],
-
-      email: email,
-
-      credits: DEFAULT_CREDITS
-
-    };
+    user.demoPassword = password;
 
   }
 
@@ -304,83 +548,36 @@ function handleLogin(event) {
 
   updateHeader();
 
-  closeAuthModal();
 
-
-  alert(
-    "Welcome back to SONARA!"
+  showAuthMessage(
+    "Signed in successfully.",
+    "success"
   );
 
-}
+
+  setTimeout(() => {
+
+    closeAuthModal();
 
 
-// =========================================
-// LOGOUT
-// =========================================
+    if (window.pendingGeneration) {
 
-function logoutUser() {
+      window.pendingGeneration = false;
 
-  const confirmLogout =
-    confirm("Do you want to log out?");
+      generateSong();
 
+    }
 
-  if (!confirmLogout) {
-    return;
-  }
-
-
-  user = null;
-
-  localStorage.removeItem(
-    "sonaraUser"
-  );
-
-  updateHeader();
+  }, 600);
 
 }
 
 
-// =========================================
-// CREDIT COST
-// =========================================
+/* =========================================================
+   ACCOUNT BUTTON
+   ========================================================= */
 
-function getSongCost() {
-
-  const duration =
-    Number(
-      document.getElementById("duration").value
-    );
-
-
-  return duration * 10;
-
-}
-
-
-// =========================================
-// GENERATE SONG
-// =========================================
-
-function generateSong() {
-
-  const prompt =
-    document.getElementById("prompt").value.trim();
-
-
-  if (!prompt) {
-
-    alert(
-      "Please describe your song first."
-    );
-
-    document.getElementById("prompt").focus();
-
-    return;
-
-  }
-
-
-  // Login required
+function handleAccountClick() {
 
   if (!user) {
 
@@ -391,9 +588,126 @@ function generateSong() {
   }
 
 
+  /*
+    Simple account menu for the prototype.
+  */
+
+  const shouldLogout =
+    confirm(
+      `Signed in as ${user.email}\n\nDo you want to sign out?`
+    );
+
+
+  if (shouldLogout) {
+
+    logout();
+
+  }
+
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+function logout() {
+
+  user = null;
+
+  localStorage.removeItem(
+    "sonaraUser"
+  );
+
+
+  updateHeader();
+
+
+  alert(
+    "You have been signed out."
+  );
+
+}
+
+
+/* =========================================================
+   SHOW CREDIT INFORMATION
+   ========================================================= */
+
+function showCreditsInfo() {
+
+  const credits =
+    getCredits();
+
+
+  alert(
+    `You currently have ${credits} credits.\n\n` +
+    `1 minute = 10 credits\n` +
+    `2 minutes = 20 credits\n` +
+    `3 minutes = 30 credits\n` +
+    `4 minutes = 40 credits\n` +
+    `5 minutes = 50 credits`
+  );
+
+}
+
+
+/* =========================================================
+   GENERATE SONG
+   ========================================================= */
+
+function generateSong() {
+
+  const promptElement =
+    document.getElementById("prompt");
+
+
+  const prompt =
+    promptElement
+      ? promptElement.value.trim()
+      : "";
+
+
+  /*
+    Check prompt
+  */
+
+  if (!prompt) {
+
+    alert(
+      "Please describe the song you want to create."
+    );
+
+    if (promptElement) {
+      promptElement.focus();
+    }
+
+    return;
+  }
+
+
+  /*
+    Check login
+  */
+
+  if (!user) {
+
+    window.pendingGeneration = true;
+
+    openAuthModal();
+
+    return;
+
+  }
+
+
+  /*
+    Calculate cost
+  */
+
   const duration =
     Number(
-      document.getElementById("duration").value
+      document.getElementById("duration")?.value || 1
     );
 
 
@@ -401,16 +715,15 @@ function generateSong() {
     duration * 10;
 
 
-  const currentCredits =
-    getCredits();
+  /*
+    Check credits
+  */
 
-
-  // Not enough credits
-
-  if (currentCredits < cost) {
+  if (getCredits() < cost) {
 
     alert(
-      `You need ${cost} credits, but you only have ${currentCredits}.`
+      `You need ${cost} credits to create this song.\n\n` +
+      `You currently have ${getCredits()} credits.`
     );
 
     return;
@@ -418,10 +731,58 @@ function generateSong() {
   }
 
 
-  // Deduct credits
+  /*
+    Deduct credits
+  */
 
   user.credits =
-    currentCredits - cost;
+    getCredits() - cost;
+
+
+  /*
+    Save song request
+  */
+
+  const songData = {
+
+    id:
+      Date.now(),
+
+    prompt:
+      prompt,
+
+    duration:
+      duration,
+
+    genre:
+      document.getElementById("genre")?.value || "Pop",
+
+    language:
+      document.getElementById("language")?.value || "English",
+
+    vocalStyle:
+      document.getElementById("vocalStyle")?.value || "Male",
+
+    mood:
+      document.getElementById("mood")?.value || "Energetic",
+
+    createdAt:
+      new Date().toISOString(),
+
+    status:
+      "generating"
+
+  };
+
+
+  if (!Array.isArray(user.songs)) {
+    user.songs = [];
+  }
+
+
+  user.songs.unshift(
+    songData
+  );
 
 
   saveUser();
@@ -429,203 +790,442 @@ function generateSong() {
   updateHeader();
 
 
-  // Open generation page
+  /*
+    Open generation screen
+  */
 
-  openGenerationPage();
+  openGenerationPage(
+    songData
+  );
 
 }
 
 
-// =========================================
-// OPEN GENERATION PAGE
-// =========================================
+/* =========================================================
+   OPEN GENERATION PAGE
+   ========================================================= */
 
-function openGenerationPage() {
+function openGenerationPage(songData) {
 
   const page =
     document.getElementById("generationPage");
 
 
-  const durationValue =
-    Number(
-      document.getElementById("duration").value
+  if (!page) {
+    return;
+  }
+
+
+  /*
+    Fill generation information
+  */
+
+  const durationElement =
+    document.getElementById(
+      "generationDuration"
     );
 
 
-  const durationText =
-    `${durationValue} minute${durationValue > 1 ? "s" : ""}`;
+  const genreElement =
+    document.getElementById(
+      "generationGenre"
+    );
 
 
-  const genre =
-    document.getElementById("genre").value;
+  const languageElement =
+    document.getElementById(
+      "generationLanguage"
+    );
 
 
-  const language =
-    document.getElementById("language").value;
+  const vocalElement =
+    document.getElementById(
+      "generationVocal"
+    );
 
 
-  const vocals =
-    document.getElementById("vocals").value;
+  const moodElement =
+    document.getElementById(
+      "generationMood"
+    );
 
 
-  document.getElementById(
-    "generationDuration"
-  ).textContent = durationText;
+  const creditsElement =
+    document.getElementById(
+      "generationCredits"
+    );
 
 
-  document.getElementById(
-    "generationGenre"
-  ).textContent = genre;
+  if (durationElement) {
+
+    durationElement.textContent =
+      `${songData.duration} ${
+        songData.duration === 1
+          ? "minute"
+          : "minutes"
+      }`;
+
+  }
 
 
-  document.getElementById(
-    "generationLanguage"
-  ).textContent = language;
+  if (genreElement) {
+    genreElement.textContent =
+      songData.genre;
+  }
 
 
-  document.getElementById(
-    "generationVocals"
-  ).textContent = vocals;
+  if (languageElement) {
+    languageElement.textContent =
+      songData.language;
+  }
 
 
-  document.getElementById(
-    "generationCredits"
-  ).textContent = getCredits();
+  if (vocalElement) {
+    vocalElement.textContent =
+      songData.vocalStyle;
+  }
 
 
-  page.classList.add("show");
+  if (moodElement) {
+    moodElement.textContent =
+      songData.mood;
+  }
+
+
+  if (creditsElement) {
+    creditsElement.textContent =
+      getCredits();
+  }
+
+
+  /*
+    Reset progress
+  */
+
+  const progressBar =
+    document.getElementById(
+      "progressBar"
+    );
+
+
+  const progressPercent =
+    document.getElementById(
+      "progressPercent"
+    );
+
+
+  if (progressBar) {
+    progressBar.style.width = "0%";
+  }
+
+
+  if (progressPercent) {
+    progressPercent.textContent = "0%";
+  }
+
+
+  /*
+    Open page
+  */
+
+  page.classList.add("active");
+
+  page.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
 
   document.body.classList.add(
     "generation-open"
   );
 
 
-  startGenerationAnimation();
+  /*
+    Start fake generation
+    until real AI backend is connected.
+  */
+
+  startGenerationProgress(
+    songData
+  );
 
 }
 
 
-// =========================================
-// GENERATION ANIMATION
-// =========================================
+/* =========================================================
+   GENERATION PROGRESS
+   ========================================================= */
 
-function startGenerationAnimation() {
+function startGenerationProgress(songData) {
 
-  const progressBar =
-    document.getElementById("progressBar");
+  /*
+    Stop previous timer
+  */
 
-  const progressPercent =
-    document.getElementById("progressPercent");
+  if (generationTimer) {
 
-  const description =
-    document.getElementById(
-      "generationDescription"
+    clearInterval(
+      generationTimer
     );
+
+  }
 
 
   let progress = 0;
 
 
-  progressBar.style.width = "0%";
-
-  progressPercent.textContent = "0";
-
-
-  description.textContent =
-    "Preparing your song idea...";
+  const progressBar =
+    document.getElementById(
+      "progressBar"
+    );
 
 
-  const messages = [
-
-    "Preparing your song idea...",
-
-    "Creating the musical structure...",
-
-    "Building instruments and rhythm...",
-
-    "Preparing vocal arrangement...",
-
-    "Mixing your track...",
-
-    "Finalizing your song..."
-
-  ];
+  const progressPercent =
+    document.getElementById(
+      "progressPercent"
+    );
 
 
-  const interval =
-    setInterval(() => {
+  const status =
+    document.getElementById(
+      "generationStatus"
+    );
 
-      progress += 1;
-
-
-      progressBar.style.width =
-        `${progress}%`;
-
-
-      progressPercent.textContent =
-        progress;
-
-
-      const messageIndex =
-        Math.min(
-          Math.floor(progress / 17),
-          messages.length - 1
-        );
-
-
-      description.textContent =
-        messages[messageIndex];
-
-
-      if (progress >= 100) {
-
-        clearInterval(interval);
-
-        finishGeneration();
-
-      }
-
-    }, 120);
-
-}
-
-
-// =========================================
-// GENERATION FINISHED
-// =========================================
-
-function finishGeneration() {
 
   const title =
     document.getElementById(
       "generationTitle"
     );
 
+
   const description =
     document.getElementById(
       "generationDescription"
     );
 
 
-  title.textContent =
-    "Your song is ready";
+  if (title) {
+
+    title.textContent =
+      "Your song is being created.";
+
+  }
 
 
-  description.textContent =
-    "Your AI-generated track will appear here once the music engine is connected.";
+  if (description) {
+
+    description.textContent =
+      "SONARA is turning your idea into an original track.";
+
+  }
+
+
+  if (status) {
+
+    status.textContent =
+      "Creating music...";
+
+  }
+
+
+  generationTimer =
+    setInterval(() => {
+
+      /*
+        Increase progress
+      */
+
+      progress += Math.floor(
+        Math.random() * 5
+      ) + 2;
+
+
+      if (progress >= 100) {
+
+        progress = 100;
+
+      }
+
+
+      /*
+        Update progress bar
+      */
+
+      if (progressBar) {
+
+        progressBar.style.width =
+          `${progress}%`;
+
+      }
+
+
+      if (progressPercent) {
+
+        progressPercent.textContent =
+          `${progress}%`;
+
+      }
+
+
+      /*
+        Update messages
+      */
+
+      if (progress < 30) {
+
+        if (status) {
+          status.textContent =
+            "Writing your musical structure...";
+        }
+
+      } else if (progress < 60) {
+
+        if (status) {
+          status.textContent =
+            "Building melody and instrumentation...";
+        }
+
+      } else if (progress < 85) {
+
+        if (status) {
+          status.textContent =
+            "Creating vocals and arrangement...";
+        }
+
+      } else if (progress < 100) {
+
+        if (status) {
+          status.textContent =
+            "Finishing your song...";
+        }
+
+      }
+
+
+      /*
+        Complete
+      */
+
+      if (progress >= 100) {
+
+        clearInterval(
+          generationTimer
+        );
+
+        generationTimer = null;
+
+
+        finishGeneration(
+          songData
+        );
+
+      }
+
+    }, 700);
+
+}
+
+
+/* =========================================================
+   FINISH GENERATION
+   ========================================================= */
+
+function finishGeneration(songData) {
+
+  /*
+    Find the saved song
+  */
+
+  if (user && Array.isArray(user.songs)) {
+
+    const savedSong =
+      user.songs.find(
+        song =>
+          song.id === songData.id
+      );
+
+
+    if (savedSong) {
+
+      savedSong.status =
+        "ready";
+
+    }
+
+
+    saveUser();
+
+  }
+
+
+  const title =
+    document.getElementById(
+      "generationTitle"
+    );
+
+
+  const description =
+    document.getElementById(
+      "generationDescription"
+    );
+
+
+  const status =
+    document.getElementById(
+      "generationStatus"
+    );
+
+
+  if (title) {
+
+    title.textContent =
+      "Your song is ready.";
+
+  }
+
+
+  if (description) {
+
+    description.textContent =
+      "Your song has been created successfully.";
+
+  }
+
+
+  if (status) {
+
+    status.innerHTML =
+      `
+        <strong>Song created successfully.</strong>
+        <br>
+        The real AI audio player will appear
+        here after the music-generation backend
+        is connected.
+      `;
+
+  }
 
 
   /*
-    The real audio player will be added
-    when we connect the AI music backend.
+    Keep this prototype generation page open.
+    Later this will automatically show:
+    
+    - Cover artwork
+    - Audio player
+    - Waveform
+    - Lyrics
+    - Download
+    - Share
+    - Regenerate
   */
 
 }
 
 
-// =========================================
-// CLOSE GENERATION PAGE
-// =========================================
+/* =========================================================
+   CLOSE GENERATION PAGE
+   ========================================================= */
 
 function closeGenerationPage() {
 
@@ -635,64 +1235,190 @@ function closeGenerationPage() {
     );
 
 
-  page.classList.remove("show");
+  if (!page) {
+    return;
+  }
+
+
+  if (generationTimer) {
+
+    clearInterval(
+      generationTimer
+    );
+
+    generationTimer = null;
+
+  }
+
+
+  page.classList.remove("active");
+
+  page.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
 
   document.body.classList.remove(
     "generation-open"
   );
 
+
+  updateHeader();
+
 }
 
 
-// =========================================
-// CLOSE MODAL BY CLICKING OUTSIDE
-// =========================================
+/* =========================================================
+   SCROLL TO CREATE
+   ========================================================= */
 
-document.addEventListener(
-  "click",
-  (event) => {
+function scrollToCreate() {
 
-    const modal =
-      document.getElementById(
-        "authModal"
-      );
+  const createSection =
+    document.getElementById(
+      "create"
+    );
 
 
-    if (
-      event.target === modal
-    ) {
+  if (!createSection) {
+    return;
+  }
 
-      closeAuthModal();
+
+  createSection.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function setupNavigation() {
+
+  const navLinks =
+    document.querySelectorAll(
+      ".nav-link"
+    );
+
+
+  navLinks.forEach(link => {
+
+    link.addEventListener(
+      "click",
+      function () {
+
+        navLinks.forEach(
+          item =>
+            item.classList.remove(
+              "active"
+            )
+        );
+
+
+        this.classList.add(
+          "active"
+        );
+
+      }
+    );
+
+  });
+
+}
+
+
+/* =========================================================
+   MODAL CLICK OUTSIDE
+   ========================================================= */
+
+function setupModalEvents() {
+
+  const modal =
+    document.getElementById(
+      "authModal"
+    );
+
+
+  if (!modal) {
+    return;
+  }
+
+
+  modal.addEventListener(
+    "click",
+    function (event) {
+
+      if (
+        event.target === modal
+      ) {
+
+        closeAuthModal();
+
+      }
 
     }
+  );
 
-  }
-);
+}
 
 
-// =========================================
-// ESC KEY
-// =========================================
+/* =========================================================
+   ESCAPE KEY
+   ========================================================= */
 
-document.addEventListener(
-  "keydown",
-  (event) => {
+function setupKeyboardEvents() {
 
-    if (event.key === "Escape") {
+  document.addEventListener(
+    "keydown",
+    function (event) {
 
-      closeAuthModal();
+      if (
+        event.key === "Escape"
+      ) {
 
-      closeGenerationPage();
+        closeAuthModal();
+
+        closeGenerationPage();
+
+      }
 
     }
+  );
 
-  }
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+function initializeSONARA() {
+
+  updateHeader();
+
+  updateCharacterCount();
+
+  updateSongCost();
+
+  setupNavigation();
+
+  setupModalEvents();
+
+  setupKeyboardEvents();
+
+}
+
+
+/* =========================================================
+   START APP
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  initializeSONARA
 );
-
-
-// =========================================
-// INITIALIZE
-// =========================================
-
-updateHeader();
-```
