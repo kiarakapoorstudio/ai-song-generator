@@ -1,59 +1,1235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <meta
     name="description"
-    content="Create original AI-powered music with SONARA."
-  >
+    content="SONARA AI — Create original AI-generated songs from your ideas."
+  />
 
-  <meta name="theme-color" content="#000000">
+  <title>SONARA AI — AI Song Generator</title>
 
-  <title>SONARA — AI Music Generator</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
-  >
+  />
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <!-- ================================
-       HEADER
-  ================================= -->
+  <!-- =========================================
+       NAVIGATION
+  ========================================== -->
 
-  <header class="navbar">
+  <header class="site-header">
 
-    <a href="#" class="logo">
-      SONARA
-    </a>
+    <div class="nav-container">
 
-    <div class="header-right">
+      <!-- Logo -->
 
-      <div
-        class="credits-pill"
-        id="creditsPill"
-      >
-        <span class="credits-icon">✦</span>
+      <a href="#" class="logo">
+        <span class="logo-mark">S</span>
+        <span class="logo-text">SONARA</span>
+      </a>
 
-        <span id="creditsAmount">
-          60
-        </span>
 
-        <span class="credits-label">
-          credits
-        </span>
+      <!-- Navigation -->
+
+      <nav class="main-nav">
+
+        <a href="#create" class="nav-link active">
+          Create
+        </a>
+
+        <a href="#songs" class="nav-link">
+          My Songs
+        </a>
+
+        <a href="#pricing" class="nav-link">
+          Pricing
+        </a>
+
+      </nav>
+
+
+      <!-- Right Side -->
+
+      <div class="header-right">
+
+        <!-- Credits -->
+
+        <button
+          type="button"
+          class="credits-pill"
+          id="creditsButton"
+          onclick="showCreditsInfo()"
+        >
+          <span class="credit-icon">✦</span>
+
+          <span id="creditsCount">
+            60
+          </span>
+
+          <span class="credits-label">
+            credits
+          </span>
+        </button>
+
+
+        <!-- Account -->
+
+        <button
+          type="button"
+          class="account-button"
+          id="accountButton"
+          onclick="handleAccountClick()"
+        >
+          Sign In
+        </button>
+
       </div>
 
-      <nav class="nav-links">
+    </div>
+
+  </header>
+
+
+
+  <!-- =========================================
+       MAIN
+  ========================================== -->
+
+  <main>
+
+    <!-- =======================================
+         HERO / CREATE SECTION
+    ======================================== -->
+
+    <section
+      class="hero-section"
+      id="create"
+    >
+
+      <div class="hero-container">
+
+        <!-- Heading -->
+
+        <div class="hero-content">
+
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            AI MUSIC GENERATOR
+          </div>
+
+          <h1>
+            Turn your idea
+            <br />
+            into a <span>song.</span>
+          </h1>
+
+          <p class="hero-description">
+            Describe your song, choose your sound,
+            and let SONARA create an original track
+            in seconds.
+          </p>
+
+        </div>
+
+
+
+        <!-- =====================================
+             GENERATOR CARD
+        ====================================== -->
+
+        <div class="generator-card">
+
+          <!-- Prompt -->
+
+          <div class="field-group">
+
+            <div class="field-header">
+
+              <label for="prompt">
+                Describe your song
+              </label>
+
+              <span
+                class="character-counter"
+                id="characterCounter"
+              >
+                0 / 1000
+              </span>
+
+            </div>
+
+
+            <textarea
+              id="prompt"
+              class="prompt-input"
+              maxlength="1000"
+              placeholder="Example: A powerful Punjabi song about friendship, late-night drives and never giving up..."
+              oninput="updateCharacterCount()"
+            ></textarea>
+
+          </div>
+
+
+
+          <!-- =================================
+               OPTIONS
+          ================================== -->
+
+          <div class="options-grid">
+
+
+            <!-- Duration -->
+
+            <div class="field-group">
+
+              <label for="duration">
+                Duration
+              </label>
+
+              <div class="select-wrapper">
+
+                <select
+                  id="duration"
+                  onchange="updateSongCost()"
+                >
+
+                  <option value="1">
+                    1 minute — 10 credits
+                  </option>
+
+                  <option value="2">
+                    2 minutes — 20 credits
+                  </option>
+
+                  <option value="3">
+                    3 minutes — 30 credits
+                  </option>
+
+                  <option value="4">
+                    4 minutes — 40 credits
+                  </option>
+
+                  <option value="5">
+                    5 minutes — 50 credits
+                  </option>
+
+                </select>
+
+                <span class="select-arrow">
+                  ▾
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Genre -->
+
+            <div class="field-group">
+
+              <label for="genre">
+                Genre
+              </label>
+
+              <div class="select-wrapper">
+
+                <select id="genre">
+
+                  <option value="Pop">
+                    Pop
+                  </option>
+
+                  <option value="Punjabi">
+                    Punjabi
+                  </option>
+
+                  <option value="Hip-Hop">
+                    Hip-Hop
+                  </option>
+
+                  <option value="Rap">
+                    Rap
+                  </option>
+
+                  <option value="R&B">
+                    R&B
+                  </option>
+
+                  <option value="Rock">
+                    Rock
+                  </option>
+
+                  <option value="Lo-fi">
+                    Lo-fi
+                  </option>
+
+                  <option value="Electronic">
+                    Electronic
+                  </option>
+
+                  <option value="Bollywood">
+                    Bollywood
+                  </option>
+
+                  <option value="Acoustic">
+                    Acoustic
+                  </option>
+
+                </select>
+
+                <span class="select-arrow">
+                  ▾
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Language -->
+
+            <div class="field-group">
+
+              <label for="language">
+                Language
+              </label>
+
+              <div class="select-wrapper">
+
+                <select id="language">
+
+                  <option value="English">
+                    English
+                  </option>
+
+                  <option value="Hindi">
+                    Hindi
+                  </option>
+
+                  <option value="Punjabi">
+                    Punjabi
+                  </option>
+
+                  <option value="Hinglish">
+                    Hinglish
+                  </option>
+
+                  <option value="Urdu">
+                    Urdu
+                  </option>
+
+                  <option value="Bengali">
+                    Bengali
+                  </option>
+
+                  <option value="Tamil">
+                    Tamil
+                  </option>
+
+                  <option value="Telugu">
+                    Telugu
+                  </option>
+
+                </select>
+
+                <span class="select-arrow">
+                  ▾
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Vocal Style -->
+
+            <div class="field-group">
+
+              <label for="vocalStyle">
+                Vocal Style
+              </label>
+
+              <div class="select-wrapper">
+
+                <select id="vocalStyle">
+
+                  <option value="Male">
+                    Male
+                  </option>
+
+                  <option value="Female">
+                    Female
+                  </option>
+
+                  <option value="Duet">
+                    Duet
+                  </option>
+
+                  <option value="Deep">
+                    Deep
+                  </option>
+
+                  <option value="Soft">
+                    Soft
+                  </option>
+
+                  <option value="Powerful">
+                    Powerful
+                  </option>
+
+                  <option value="Melodic">
+                    Melodic
+                  </option>
+
+                </select>
+
+                <span class="select-arrow">
+                  ▾
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Mood -->
+
+            <div class="field-group">
+
+              <label for="mood">
+                Mood
+              </label>
+
+              <div class="select-wrapper">
+
+                <select id="mood">
+
+                  <option value="Energetic">
+                    Energetic
+                  </option>
+
+                  <option value="Happy">
+                    Happy
+                  </option>
+
+                  <option value="Sad">
+                    Sad
+                  </option>
+
+                  <option value="Romantic">
+                    Romantic
+                  </option>
+
+                  <option value="Chill">
+                    Chill
+                  </option>
+
+                  <option value="Dark">
+                    Dark
+                  </option>
+
+                  <option value="Emotional">
+                    Emotional
+                  </option>
+
+                  <option value="Motivational">
+                    Motivational
+                  </option>
+
+                </select>
+
+                <span class="select-arrow">
+                  ▾
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =================================
+               GENERATE BUTTON
+          ================================== -->
+
+          <div class="generate-area">
+
+            <button
+              type="button"
+              class="generate-button"
+              id="generateButton"
+              onclick="generateSong()"
+            >
+
+              <span class="generate-button-text">
+                Generate Song
+              </span>
+
+              <span class="generate-button-cost">
+                <span id="generateCost">
+                  10
+                </span>
+                credits
+              </span>
+
+              <span class="generate-arrow">
+                →
+              </span>
+
+            </button>
+
+
+            <p class="credit-note">
+              New users receive
+              <strong>60 free credits</strong>.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================
+         FEATURES
+    ======================================== -->
+
+    <section class="features-section">
+
+      <div class="section-container">
+
+        <div class="section-heading">
+
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            CREATE WITHOUT LIMITS
+          </div>
+
+          <h2>
+            Your idea.
+            <br />
+            Your sound.
+          </h2>
+
+        </div>
+
+
+        <div class="features-grid">
+
+          <!-- Feature 1 -->
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ✦
+            </div>
+
+            <h3>
+              AI Music
+            </h3>
+
+            <p>
+              Turn a simple idea into an
+              original song using AI.
+            </p>
+
+          </div>
+
+
+          <!-- Feature 2 -->
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ◉
+            </div>
+
+            <h3>
+              Full Control
+            </h3>
+
+            <p>
+              Choose your duration, genre,
+              language, mood and vocal style.
+            </p>
+
+          </div>
+
+
+          <!-- Feature 3 -->
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ♫
+            </div>
+
+            <h3>
+              Original Sounds
+            </h3>
+
+            <p>
+              Create original vocals and
+              musical styles without copying
+              a specific artist's voice.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================
+         MY SONGS
+    ======================================== -->
+
+    <section
+      class="songs-section"
+      id="songs"
+    >
+
+      <div class="section-container">
+
+        <div class="songs-header">
+
+          <div>
+
+            <div class="eyebrow">
+              <span class="eyebrow-dot"></span>
+              YOUR MUSIC
+            </div>
+
+            <h2>
+              My Songs
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="empty-songs"
+          id="emptySongs"
+        >
+
+          <div class="empty-songs-icon">
+            ♫
+          </div>
+
+          <h3>
+            Your songs will appear here
+          </h3>
+
+          <p>
+            Create your first AI song and
+            it will be saved to your library.
+          </p>
+
+          <button
+            type="button"
+            class="secondary-button"
+            onclick="scrollToCreate()"
+          >
+            Create a Song
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================
+         PRICING
+    ======================================== -->
+
+    <section
+      class="pricing-section"
+      id="pricing"
+    >
+
+      <div class="section-container">
+
+        <div class="pricing-content">
+
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            SIMPLE CREDITS
+          </div>
+
+          <h2>
+            Start creating
+            <br />
+            for free.
+          </h2>
+
+          <p>
+            Every new account starts with
+            60 free credits.
+          </p>
+
+
+          <div class="credit-breakdown">
+
+            <div class="credit-row">
+
+              <span>
+                1 minute song
+              </span>
+
+              <strong>
+                10 credits
+              </strong>
+
+            </div>
+
+            <div class="credit-row">
+
+              <span>
+                2 minute song
+              </span>
+
+              <strong>
+                20 credits
+              </strong>
+
+            </div>
+
+            <div class="credit-row">
+
+              <span>
+                3 minute song
+              </span>
+
+              <strong>
+                30 credits
+              </strong>
+
+            </div>
+
+            <div class="credit-row">
+
+              <span>
+                4 minute song
+              </span>
+
+              <strong>
+                40 credits
+              </strong>
+
+            </div>
+
+            <div class="credit-row">
+
+              <span>
+                5 minute song
+              </span>
+
+              <strong>
+                50 credits
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="secondary-button"
+            onclick="scrollToCreate()"
+          >
+            Start Creating
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =========================================
+       AUTH MODAL
+  ========================================== -->
+
+  <div
+    class="modal-overlay"
+    id="authModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="auth-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="authTitle"
+    >
+
+      <!-- Close -->
+
+      <button
+        type="button"
+        class="modal-close"
+        onclick="closeAuthModal()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+
+      <!-- Icon -->
+
+      <div class="auth-icon">
+        ✦
+      </div>
+
+
+      <!-- Heading -->
+
+      <h2 id="authTitle">
+        Welcome to SONARA
+      </h2>
+
+      <p class="auth-description">
+        Sign in or create an account to
+        start generating songs.
+      </p>
+
+
+
+      <!-- =====================================
+           AUTH TABS
+      ====================================== -->
+
+      <div class="auth-tabs">
+
+        <button
+          type="button"
+          class="auth-tab active"
+          id="loginTab"
+          onclick="showLoginForm()"
+        >
+          Sign In
+        </button>
+
+        <button
+          type="button"
+          class="auth-tab"
+          id="signupTab"
+          onclick="showSignupForm()"
+        >
+          Sign Up
+        </button>
+
+      </div>
+
+
+
+      <!-- =====================================
+           LOGIN FORM
+      ====================================== -->
+
+      <form
+        class="auth-form"
+        id="loginForm"
+        onsubmit="handleLogin(event)"
+      >
+
+        <div class="auth-field">
+
+          <label for="loginEmail">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+
+        </div>
+
+
+        <div class="auth-field">
+
+          <label for="loginPassword">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          />
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="auth-submit"
+        >
+          Sign In
+        </button>
+
+      </form>
+
+
+
+      <!-- =====================================
+           SIGNUP FORM
+      ====================================== -->
+
+      <form
+        class="auth-form"
+        id="signupForm"
+        style="display: none;"
+        onsubmit="handleSignup(event)"
+      >
+
+        <div class="auth-field">
+
+          <label for="signupName">
+            Name
+          </label>
+
+          <input
+            type="text"
+            id="signupName"
+            placeholder="Your name"
+            autocomplete="name"
+            required
+          />
+
+        </div>
+
+
+        <div class="auth-field">
+
+          <label for="signupEmail">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="signupEmail"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+
+        </div>
+
+
+        <div class="auth-field">
+
+          <label for="signupPassword">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="signupPassword"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          />
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="auth-submit"
+        >
+          Create Account
+        </button>
+
+        <p class="auth-note">
+          You'll receive
+          <strong>60 free credits</strong>
+          after creating your account.
+        </p>
+
+      </form>
+
+
+      <!-- Auth message -->
+
+      <p
+        class="auth-message"
+        id="authMessage"
+      ></p>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =========================================
+       GENERATION PAGE
+  ========================================== -->
+
+  <div
+    class="generation-page"
+    id="generationPage"
+    aria-hidden="true"
+  >
+
+    <div class="generation-container">
+
+      <!-- Top -->
+
+      <div class="generation-top">
+
+        <button
+          type="button"
+          class="back-button"
+          onclick="closeGenerationPage()"
+        >
+          ← Back
+        </button>
+
+
+        <div class="generation-credits">
+
+          <span class="credit-icon">
+            ✦
+          </span>
+
+          <span id="generationCredits">
+            60
+          </span>
+
+          credits
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Content -->
+
+      <div class="generation-content">
+
+        <div class="generation-symbol">
+          ✦
+        </div>
+
+
+        <div class="eyebrow">
+          CREATING YOUR SONG
+        </div>
+
+
+        <h2 id="generationTitle">
+          Your song is being created.
+        </h2>
+
+
+        <p id="generationDescription">
+          SONARA is turning your idea into
+          an original track.
+        </p>
+
+
+
+        <!-- Progress -->
+
+        <div class="progress-container">
+
+          <div class="progress-track">
+
+            <div
+              class="progress-bar"
+              id="progressBar"
+              style="width: 0%;"
+            ></div>
+
+          </div>
+
+
+          <div class="progress-details">
+
+            <span>
+              Creating music...
+            </span>
+
+            <span id="progressPercent">
+              0%
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Song Information -->
+
+        <div class="generation-info">
+
+          <div class="generation-info-item">
+
+            <span>
+              Duration
+            </span>
+
+            <strong id="generationDuration">
+              1 minute
+            </strong>
+
+          </div>
+
+
+          <div class="generation-info-item">
+
+            <span>
+              Genre
+            </span>
+
+            <strong id="generationGenre">
+              Pop
+            </strong>
+
+          </div>
+
+
+          <div class="generation-info-item">
+
+            <span>
+              Language
+            </span>
+
+            <strong id="generationLanguage">
+              English
+            </strong>
+
+          </div>
+
+
+          <div class="generation-info-item">
+
+            <span>
+              Vocal
+            </span>
+
+            <strong id="generationVocal">
+              Male
+            </strong>
+
+          </div>
+
+
+          <div class="generation-info-item">
+
+            <span>
+              Mood
+            </span>
+
+            <strong id="generationMood">
+              Energetic
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Generation Status -->
+
+        <div
+          class="generation-status"
+          id="generationStatus"
+        >
+          Please wait while your song is
+          being generated.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+
+  <footer class="site-footer">
+
+    <div class="footer-container">
+
+      <div class="footer-brand">
+
+        <div class="logo">
+
+          <span class="logo-mark">
+            S
+          </span>
+
+          <span class="logo-text">
+            SONARA
+          </span>
+
+        </div>
+
+        <p>
+          Create original music with AI.
+        </p>
+
+      </div>
+
+
+      <div class="footer-links">
 
         <a href="#create">
           Create
@@ -67,452 +1243,32 @@
           Pricing
         </a>
 
-      </nav>
-
-      <button
-        class="account-button"
-        id="accountButton"
-        onclick="openAuthModal()"
-      >
-        Sign In
-      </button>
+      </div>
 
     </div>
 
-  </header>
 
+    <div class="footer-bottom">
 
-  <!-- ================================
-       HOME
-  ================================= -->
-
-  <main id="create">
-
-    <div class="badge">
-      <span>✦</span>
-      AI MUSIC CREATOR
-    </div>
-
-    <h1>
-      Turn your idea<br>
-      into a song.
-    </h1>
-
-    <p class="subtitle">
-      Describe your song in a few words and create
-      an original track with your chosen duration,
-      genre, language, vocal style and mood.
-    </p>
-
-
-    <!-- ================================
-         GENERATOR CARD
-    ================================= -->
-
-    <section class="generator">
-
-      <div class="prompt-wrapper">
-
-        <textarea
-          id="prompt"
-          maxlength="1000"
-          placeholder="Describe your song... e.g. A sad Punjabi song about missing someone, emotional lyrics, deep vocals and a slow beat."
-        ></textarea>
-
-        <span
-          class="char-count"
-          id="charCount"
-        >
-          0 characters
-        </span>
-
-      </div>
-
-
-      <div class="options">
-
-        <div class="option">
-
-          <label for="duration">
-            Duration
-          </label>
-
-          <select id="duration">
-
-            <option value="1">
-              1 minute — 10 credits
-            </option>
-
-            <option value="2">
-              2 minutes — 20 credits
-            </option>
-
-            <option value="3" selected>
-              3 minutes — 30 credits
-            </option>
-
-            <option value="4">
-              4 minutes — 40 credits
-            </option>
-
-            <option value="5">
-              5 minutes — 50 credits
-            </option>
-
-          </select>
-
-        </div>
-
-
-        <div class="option">
-
-          <label for="genre">
-            Genre
-          </label>
-
-          <select id="genre">
-
-            <option>Pop</option>
-            <option>Punjabi</option>
-            <option>Hip-Hop</option>
-            <option>Rap</option>
-            <option>Lo-fi</option>
-            <option>Rock</option>
-            <option>EDM</option>
-            <option>R&B</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="option">
-
-          <label for="language">
-            Language
-          </label>
-
-          <select id="language">
-
-            <option>Punjabi</option>
-            <option>Hindi</option>
-            <option>English</option>
-            <option>Haryanvi</option>
-            <option>Urdu</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="option">
-
-          <label for="vocals">
-            Vocal Style
-          </label>
-
-          <select id="vocals">
-
-            <option>Deep Male</option>
-            <option>Melodic Male</option>
-            <option>Emotional Male</option>
-            <option>Soft Female</option>
-            <option>Powerful Female</option>
-            <option>Rap Vocal</option>
-            <option>AI Original Voice</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="option">
-
-          <label for="mood">
-            Mood
-          </label>
-
-          <select id="mood">
-
-            <option>Happy</option>
-            <option>Sad</option>
-            <option>Romantic</option>
-            <option selected>Emotional</option>
-            <option>Energetic</option>
-            <option>Chill</option>
-            <option>Dark</option>
-            <option>Hopeful</option>
-
-          </select>
-
-        </div>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="generate"
-        onclick="generateSong()"
-      >
-        <span>✦</span>
-        <span>Generate Song</span>
-      </button>
-
-    </section>
-
-  </main>
-
-
-  <!-- ================================
-       AUTH MODAL
-  ================================= -->
-
-  <div
-    class="modal-overlay"
-    id="authModal"
-  >
-
-    <div class="auth-modal">
-
-      <button
-        class="modal-close"
-        onclick="closeAuthModal()"
-      >
-        ×
-      </button>
-
-
-      <div class="auth-icon">
-        ✦
-      </div>
-
-      <h2>
-        Create your account
-      </h2>
-
-      <p class="auth-description">
-        Sign in or create an account to generate your song.
-        New users receive 60 free credits.
+      <p>
+        © 2026 SONARA AI. All rights reserved.
       </p>
 
-
-      <div class="auth-tabs">
-
-        <button
-          class="auth-tab active"
-          id="loginTab"
-          onclick="switchAuth('login')"
-        >
-          Login
-        </button>
-
-        <button
-          class="auth-tab"
-          id="signupTab"
-          onclick="switchAuth('signup')"
-        >
-          Sign Up
-        </button>
-
-      </div>
-
-
-      <!-- Login -->
-
-      <form
-        id="loginForm"
-        class="auth-form"
-        onsubmit="handleLogin(event)"
-      >
-
-        <input
-          type="email"
-          id="loginEmail"
-          placeholder="Email address"
-          required
-        >
-
-        <input
-          type="password"
-          id="loginPassword"
-          placeholder="Password"
-          required
-        >
-
-        <button type="submit">
-          Login
-        </button>
-
-      </form>
-
-
-      <!-- Signup -->
-
-      <form
-        id="signupForm"
-        class="auth-form hidden"
-        onsubmit="handleSignup(event)"
-      >
-
-        <input
-          type="text"
-          id="signupName"
-          placeholder="Your name"
-          required
-        >
-
-        <input
-          type="email"
-          id="signupEmail"
-          placeholder="Email address"
-          required
-        >
-
-        <input
-          type="password"
-          id="signupPassword"
-          placeholder="Create password"
-          minlength="6"
-          required
-        >
-
-        <button type="submit">
-          Create Account
-        </button>
-
-      </form>
-
-
-      <p class="auth-note">
-        By continuing, you agree to our Terms and Privacy Policy.
+      <p>
+        AI-generated music platform
       </p>
 
     </div>
 
-  </div>
-
-
-  <!-- ================================
-       GENERATION PAGE
-  ================================= -->
-
-  <div
-    class="generation-page"
-    id="generationPage"
-  >
-
-    <div class="generation-container">
-
-      <div class="generation-top">
-
-        <button
-          class="back-button"
-          onclick="closeGenerationPage()"
-        >
-          ← Back
-        </button>
-
-        <div class="generation-credit">
-          <span>✦</span>
-          <span id="generationCredits">
-            60
-          </span>
-          credits
-        </div>
-
-      </div>
-
-
-      <div class="generation-content">
-
-        <div class="generation-symbol">
-          ✦
-        </div>
-
-        <div class="generation-status">
-          CREATING YOUR SONG
-        </div>
-
-        <h2 id="generationTitle">
-          Your song is being created
-        </h2>
-
-        <p id="generationDescription">
-          Our AI is preparing your track.
-        </p>
-
-
-        <div class="progress-container">
-
-          <div class="progress-track">
-
-            <div
-              class="progress-bar"
-              id="progressBar"
-            ></div>
-
-          </div>
-
-          <div class="progress-percent">
-            <span id="progressPercent">
-              0
-            </span>%
-          </div>
-
-        </div>
-
-
-        <div class="generation-info">
-
-          <div>
-            <span>Duration</span>
-            <strong id="generationDuration">
-              3 minutes
-            </strong>
-          </div>
-
-          <div>
-            <span>Genre</span>
-            <strong id="generationGenre">
-              Punjabi
-            </strong>
-          </div>
-
-          <div>
-            <span>Language</span>
-            <strong id="generationLanguage">
-              Punjabi
-            </strong>
-          </div>
-
-          <div>
-            <span>Vocals</span>
-            <strong id="generationVocals">
-              Emotional Male
-            </strong>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ================================
-       FOOTER
-  ================================= -->
-
-  <footer>
-    © 2026 SONARA — AI Music Creation
   </footer>
 
+
+
+  <!-- =========================================
+       JAVASCRIPT
+  ========================================== -->
 
   <script src="script.js"></script>
 
 </body>
 </html>
-
