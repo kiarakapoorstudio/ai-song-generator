@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Song | SONARA AI</title>
+
+    <meta
+        name="description"
+        content="Listen to your AI-generated song on SONARA AI."
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="song.css">
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+            <span class="logo-mark">S</span>
+            <span class="logo-text">SONARA</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="index.html">Create</a>
+            <a href="index.html#songs">My Songs</a>
+            <a href="index.html#pricing">Pricing</a>
+        </nav>
+
+        <div class="nav-right">
+
+            <button class="credits-pill" id="creditsButton">
+                <span class="credit-icon">✦</span>
+                <span id="creditsCount">60</span>
+                <span>credits</span>
+            </button>
+
+            <button class="account-button" id="accountButton">
+                Sign In
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+    <main class="song-page">
+
+        <!-- TOP -->
+        <section class="song-top">
+
+            <div class="back-area">
+                <a href="index.html" class="back-button">
+                    <span>←</span>
+                    Back to Create
+                </a>
+            </div>
+
+            <div class="ready-badge">
+                <span class="ready-dot"></span>
+                SONG READY
+            </div>
+
+            <h1 id="songTitle">
+                Your New Song
+            </h1>
+
+            <p class="song-artist" id="songArtist">
+                SONARA AI
+            </p>
+
+        </section>
+
+
+        <!-- PLAYER SECTION -->
+        <section class="player-layout">
+
+            <!-- ALBUM ART -->
+            <div class="cover-section">
+
+                <div class="album-cover" id="albumCover">
+
+                    <div class="cover-noise"></div>
+
+                    <div class="cover-content">
+
+                        <div class="cover-logo">
+                            S
+                        </div>
+
+                        <div class="cover-name">
+                            SONARA
+                        </div>
+
+                        <div class="cover-ai">
+                            AI GENERATED
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="cover-caption">
+                    <span id="coverGenre">Pop</span>
+                    <span class="caption-dot">•</span>
+                    <span id="coverMood">Energetic</span>
+                </div>
+
+            </div>
+
+
+            <!-- PLAYER -->
+            <div class="player-card">
+
+                <div class="player-header">
+
+                    <div>
+                        <p class="small-label">NOW PLAYING</p>
+
+                        <h2 id="playerTitle">
+                            Your New Song
+                        </h2>
+
+                        <p id="playerArtist">
+                            SONARA AI
+                        </p>
+                    </div>
+
+                    <button
+                        class="favorite-button"
+                        id="favoriteButton"
+                        aria-label="Save song"
+                    >
+                        ♡
+                    </button>
+
+                </div>
+
+
+                <!-- AUDIO -->
+                <audio id="audioPlayer"></audio>
+
+
+                <!-- WAVEFORM -->
+                <div class="waveform" id="waveform">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+
+                <!-- PROGRESS -->
+                <div class="progress-area">
+
+                    <span id="currentTime">
+                        0:00
+                    </span>
+
+                    <input
+                        type="range"
+                        id="audioProgress"
+                        min="0"
+                        max="100"
+                        value="0"
+                    >
+
+                    <span id="totalTime">
+                        0:00
+                    </span>
+
+                </div>
+
+
+                <!-- CONTROLS -->
+                <div class="player-controls">
+
+                    <button
+                        class="control-button secondary"
+                        id="previousButton"
+                        aria-label="Previous"
+                    >
+                        ↶
+                    </button>
+
+                    <button
+                        class="play-button"
+                        id="playButton"
+                        aria-label="Play"
+                    >
+                        ▶
+                    </button>
+
+                    <button
+                        class="control-button secondary"
+                        id="nextButton"
+                        aria-label="Next"
+                    >
+                        ↷
+                    </button>
+
+                </div>
+
+
+                <!-- VOLUME -->
+                <div class="volume-area">
+
+                    <span class="volume-icon">
+                        🔊
+                    </span>
+
+                    <input
+                        type="range"
+                        id="volumeControl"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value="0.8"
+                    >
+
+                </div>
+
+                <p class="audio-note" id="audioNote">
+                    Your generated audio will appear here once the music generation API is connected.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACTIONS -->
+        <section class="action-section">
+
+            <button class="action-button primary" id="downloadButton">
+                <span>↓</span>
+                Download
+            </button>
+
+            <button class="action-button" id="shareButton">
+                <span>↗</span>
+                Share
+            </button>
+
+            <button class="action-button" id="regenerateButton">
+                <span>⟳</span>
+                Regenerate
+            </button>
+
+        </section>
+
+
+        <!-- CONTENT GRID -->
+        <section class="content-grid">
+
+            <!-- LYRICS -->
+            <div class="content-card lyrics-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <span class="card-eyebrow">
+                            LYRICS
+                        </span>
+
+                        <h2>
+                            Your song lyrics
+                        </h2>
+                    </div>
+
+                    <button
+                        class="copy-button"
+                        id="copyLyricsButton"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="lyrics-content"
+                    id="lyricsContent"
+                >
+
+                    <p class="lyrics-placeholder">
+                        Your generated lyrics will appear here.
+                    </p>
+
+                    <p class="lyrics-placeholder">
+                        Connect the SONARA AI music generation backend to automatically generate and display your complete lyrics.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SONG DETAILS -->
+            <div class="content-card details-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <span class="card-eyebrow">
+                            SONG DETAILS
+                        </span>
+
+                        <h2>
+                            Generation settings
+                        </h2>
+                    </div>
+
+                </div>
+
+
+                <div class="details-list">
+
+                    <div class="detail-row">
+                        <span>Duration</span>
+                        <strong id="detailDuration">
+                            1 minute
+                        </strong>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Genre</span>
+                        <strong id="detailGenre">
+                            Pop
+                        </strong>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Language</span>
+                        <strong id="detailLanguage">
+                            English
+                        </strong>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Vocal style</span>
+                        <strong id="detailVocal">
+                            Male
+                        </strong>
+                    </div>
+
+                    <div class="detail-row">
+                        <span>Mood</span>
+                        <strong id="detailMood">
+                            Energetic
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CREATE AGAIN -->
+        <section class="create-again">
+
+            <div>
+                <span class="card-eyebrow">
+                    CREATE SOMETHING NEW
+                </span>
+
+                <h2>
+                    Ready for another song?
+                </h2>
+
+                <p>
+                    Turn another idea into music with SONARA AI.
+                </p>
+            </div>
+
+            <a
+                href="index.html"
+                class="create-again-button"
+            >
+                Create New Song
+                <span>→</span>
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="footer-logo">
+            <span class="logo-mark">S</span>
+            <span>SONARA</span>
+        </div>
+
+        <p>
+            Create music. Create moments.
+        </p>
+
+        <span class="footer-copy">
+            © 2026 SONARA AI
+        </span>
+
+    </footer>
+
+
+    <!-- AUTH MODAL -->
+    <div
+        class="auth-overlay"
+        id="authModal"
+        aria-hidden="true"
+    >
+
+        <div class="auth-modal">
+
+            <button
+                class="close-auth"
+                id="closeAuthButton"
+            >
+                ×
+            </button>
+
+            <div class="auth-logo">
+                <span class="logo-mark">S</span>
+                SONARA
+            </div>
+
+            <h2>
+                Sign in to SONARA
+            </h2>
+
+            <p>
+                Manage your songs and credits.
+            </p>
+
+            <button
+                class="auth-modal-button"
+                id="modalLoginButton"
+            >
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="song.js"></script>
+
+</body>
+</html>
