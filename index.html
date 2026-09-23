@@ -3,131 +3,113 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <meta
     name="description"
-    content="Create original AI-powered music from a simple idea."
+    content="Create original AI-powered music with SONARA."
   >
 
-  <meta
-    name="theme-color"
-    content="#000000"
-  >
+  <meta name="theme-color" content="#000000">
 
   <title>SONARA — AI Music Generator</title>
 
-  <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
 
-  <!-- Main stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 
-
 <body>
 
-  <!-- =====================================
-       NAVIGATION
-  ====================================== -->
+  <!-- ================================
+       HEADER
+  ================================= -->
 
-  <nav>
+  <header class="navbar">
 
-    <a
-      href="#"
-      class="logo"
-      aria-label="SONARA Home"
-    >
+    <a href="#" class="logo">
       SONARA
     </a>
 
+    <div class="header-right">
 
-    <div class="nav-links">
+      <div
+        class="credits-pill"
+        id="creditsPill"
+      >
+        <span class="credits-icon">✦</span>
 
-      <a href="#create">
-        Create
-      </a>
+        <span id="creditsAmount">
+          60
+        </span>
 
-      <a href="#songs">
-        My Songs
-      </a>
+        <span class="credits-label">
+          credits
+        </span>
+      </div>
 
-      <a href="#pricing">
-        Pricing
-      </a>
+      <nav class="nav-links">
 
-      <a
-        href="#login"
-        class="nav-button"
+        <a href="#create">
+          Create
+        </a>
+
+        <a href="#songs">
+          My Songs
+        </a>
+
+        <a href="#pricing">
+          Pricing
+        </a>
+
+      </nav>
+
+      <button
+        class="account-button"
+        id="accountButton"
+        onclick="openAuthModal()"
       >
         Sign In
-      </a>
+      </button>
 
     </div>
 
-  </nav>
+  </header>
 
 
-
-  <!-- =====================================
-       MAIN
-  ====================================== -->
+  <!-- ================================
+       HOME
+  ================================= -->
 
   <main id="create">
 
-
-    <!-- Badge -->
-
     <div class="badge">
-
       <span>✦</span>
-
-      <span>
-        AI MUSIC CREATOR
-      </span>
-
+      AI MUSIC CREATOR
     </div>
-
-
-
-    <!-- Hero -->
 
     <h1>
       Turn your idea<br>
       into a song.
     </h1>
 
-
     <p class="subtitle">
-
       Describe your song in a few words and create
       an original track with your chosen duration,
       genre, language, vocal style and mood.
-
     </p>
 
 
+    <!-- ================================
+         GENERATOR CARD
+    ================================= -->
 
-    <!-- =====================================
-         SONG GENERATOR
-    ====================================== -->
-
-    <section
-      class="generator"
-      aria-label="AI Song Generator"
-    >
-
-
-      <!-- Prompt -->
+    <section class="generator">
 
       <div class="prompt-wrapper">
 
@@ -135,9 +117,7 @@
           id="prompt"
           maxlength="1000"
           placeholder="Describe your song... e.g. A sad Punjabi song about missing someone, emotional lyrics, deep vocals and a slow beat."
-          aria-label="Describe your song"
         ></textarea>
-
 
         <span
           class="char-count"
@@ -149,15 +129,7 @@
       </div>
 
 
-
-      <!-- =====================================
-           SONG OPTIONS
-      ====================================== -->
-
       <div class="options">
-
-
-        <!-- Duration -->
 
         <div class="option">
 
@@ -167,292 +139,4 @@
 
           <select id="duration">
 
-            <option value="1 minute">
-              1 minute
-            </option>
-
-            <option value="2 minutes">
-              2 minutes
-            </option>
-
-            <option
-              value="3 minutes"
-              selected
-            >
-              3 minutes
-            </option>
-
-            <option value="4 minutes">
-              4 minutes
-            </option>
-
-            <option value="5 minutes">
-              5 minutes
-            </option>
-
-          </select>
-
-        </div>
-
-
-
-        <!-- Genre -->
-
-        <div class="option">
-
-          <label for="genre">
-            Genre
-          </label>
-
-          <select id="genre">
-
-            <option value="Pop">
-              Pop
-            </option>
-
-            <option value="Punjabi">
-              Punjabi
-            </option>
-
-            <option value="Hip-Hop">
-              Hip-Hop
-            </option>
-
-            <option value="Rap">
-              Rap
-            </option>
-
-            <option value="Lo-fi">
-              Lo-fi
-            </option>
-
-            <option value="Rock">
-              Rock
-            </option>
-
-            <option value="EDM">
-              EDM
-            </option>
-
-            <option value="R&B">
-              R&B
-            </option>
-
-          </select>
-
-        </div>
-
-
-
-        <!-- Language -->
-
-        <div class="option">
-
-          <label for="language">
-            Language
-          </label>
-
-          <select id="language">
-
-            <option value="Punjabi">
-              Punjabi
-            </option>
-
-            <option value="Hindi">
-              Hindi
-            </option>
-
-            <option value="English">
-              English
-            </option>
-
-            <option value="Haryanvi">
-              Haryanvi
-            </option>
-
-            <option value="Urdu">
-              Urdu
-            </option>
-
-          </select>
-
-        </div>
-
-
-
-        <!-- Vocal Style -->
-
-        <div class="option">
-
-          <label for="vocals">
-            Vocal Style
-          </label>
-
-          <select id="vocals">
-
-            <option value="Deep Male">
-              Deep Male
-            </option>
-
-            <option value="Melodic Male">
-              Melodic Male
-            </option>
-
-            <option value="Emotional Male">
-              Emotional Male
-            </option>
-
-            <option value="Soft Female">
-              Soft Female
-            </option>
-
-            <option value="Powerful Female">
-              Powerful Female
-            </option>
-
-            <option value="Rap Vocal">
-              Rap Vocal
-            </option>
-
-            <option value="AI Original Voice">
-              AI Original Voice
-            </option>
-
-          </select>
-
-        </div>
-
-
-
-        <!-- Mood -->
-
-        <div class="option">
-
-          <label for="mood">
-            Mood
-          </label>
-
-          <select id="mood">
-
-            <option value="Happy">
-              Happy
-            </option>
-
-            <option value="Sad">
-              Sad
-            </option>
-
-            <option value="Romantic">
-              Romantic
-            </option>
-
-            <option
-              value="Emotional"
-              selected
-            >
-              Emotional
-            </option>
-
-            <option value="Energetic">
-              Energetic
-            </option>
-
-            <option value="Chill">
-              Chill
-            </option>
-
-            <option value="Dark">
-              Dark
-            </option>
-
-            <option value="Hopeful">
-              Hopeful
-            </option>
-
-          </select>
-
-        </div>
-
-
-      </div>
-
-
-
-      <!-- =====================================
-           GENERATE BUTTON
-      ====================================== -->
-
-      <button
-        type="button"
-        class="generate"
-        id="generateButton"
-        onclick="generateSong()"
-      >
-
-        <span>
-          ✦
-        </span>
-
-        <span>
-          Generate Song
-        </span>
-
-      </button>
-
-
-
-      <!-- =====================================
-           RESULT
-      ====================================== -->
-
-      <div
-        class="result"
-        id="result"
-        aria-live="polite"
-      >
-
-        <div class="result-title">
-
-          Your song is ready to generate 🎵
-
-        </div>
-
-
-        <div
-          class="result-text"
-          id="resultText"
-        >
-
-        </div>
-
-      </div>
-
-
-    </section>
-
-
-  </main>
-
-
-
-  <!-- =====================================
-       FOOTER
-  ====================================== -->
-
-  <footer>
-
-    © 2026 SONARA — AI Music Creation
-
-  </footer>
-
-
-
-  <!-- =====================================
-       JAVASCRIPT
-  ====================================== -->
-
-  <script src="script.js"></script>
-
-</body>
-</html>
-
+            <op
