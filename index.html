@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI Song Generator</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    nav {
+      height: 72px;
+      border-bottom: 1px solid #222;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    main {
+      width: min(900px, 92%);
+      margin: 90px auto;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #333;
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 8vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -4px;
+      margin-bottom: 22px;
+    }
+
+    .subtitle {
+      color: #888;
+      font-size: 17px;
+      max-width: 600px;
+      margin: 0 auto 45px;
+      line-height: 1.6;
+    }
+
+    .generator {
+      background: #090909;
+      border: 1px solid #292929;
+      border-radius: 20px;
+      padding: 22px;
+      text-align: left;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      resize: vertical;
+      background: #050505;
+      color: #fff;
+      border: 1px solid #292929;
+      border-radius: 14px;
+      padding: 18px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #666;
+    }
+
+    textarea::placeholder {
+      color: #555;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .option label {
+      display: block;
+      color: #777;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    select {
+      width: 100%;
+      background: #050505;
+      color: #fff;
+      border: 1px solid #292929;
+      border-radius: 10px;
+      padding: 12px;
+      outline: none;
+    }
+
+    .generate {
+      width: 100%;
+      margin-top: 16px;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #fff;
+      color: #000;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .generate:hover {
+      background: #ddd;
+    }
+
+    .result {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #292929;
+      border-radius: 16px;
+      background: #090909;
+    }
+
+    .result-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .result-text {
+      color: #777;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      color: #444;
+      padding: 30px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      .options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        margin-top: 60px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">SONARA</div>
+
+    <div class="nav-links">
+      <a href="#">Create</a>
+      <a href="#">My Songs</a>
+      <a href="#">Pricing</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="badge">✦ AI MUSIC CREATOR</div>
+
+    <h1>Turn your idea<br>into a song.</h1>
+
+    <p class="subtitle">
+      Describe your song in a few words and create an original track
+      with your chosen duration, genre, language and vocal style.
+    </p>
+
+    <section class="generator">
+
+      <textarea
+        id="prompt"
+        placeholder="Describe your song... e.g. A sad Punjabi song about missing someone, with emotional lyrics and a slow beat."
+      ></textarea>
+
+      <div class="options">
+
+        <div class="option">
+          <label>Duration</label>
+          <select id="duration">
+            <option>1 minute</option>
+            <option>2 minutes</option>
+            <option selected>3 minutes</option>
+            <option>4 minutes</option>
+            <option>5 minutes</option>
+          </select>
+        </div>
+
+        <div class="option">
+          <label>Genre</label>
+          <select id="genre">
+            <option>Pop</option>
+            <option>Punjabi</option>
+            <option>Hip-Hop</option>
+            <option>Rap</option>
+            <option>Lo-fi</option>
+            <option>Rock</option>
+            <option>EDM</option>
+          </select>
+        </div>
+
+        <div class="option">
+          <label>Language</label>
+          <select id="language">
+            <option>Punjabi</option>
+            <option>Hindi</option>
+            <option>English</option>
+            <option>Haryanvi</option>
+          </select>
+        </div>
+
+        <div class="option">
+          <label>Vocal style</label>
+          <select id="vocals">
+            <option>Deep Male</option>
+            <option>Melodic Male</option>
+            <option>Emotional Male</option>
+            <option>Soft Female</option>
+            <option>Powerful Female</option>
+            <option>Rap Vocal</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button class="generate" onclick="generateSong()">
+        ✦ Generate Song
+      </button>
+
+      <div class="result" id="result">
+        <div class="result-title">Your song is ready to generate 🎵</div>
+        <div class="result-text" id="resultText"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 SONARA — AI Music Creation
+  </footer>
+
+  <script>
+    function generateSong() {
+
+      const prompt = document.getElementById("prompt").value.trim();
+
+      if (!prompt) {
+        alert("Please describe your song first.");
+        return;
+      }
+
+      const duration = document.getElementById("duration").value;
+      const genre = document.getElementById("genre").value;
+      const language = document.getElementById("language").value;
+      const vocals = document.getElementById("vocals").value;
+
+      document.getElementById("result").style.display = "block";
+
+      document.getElementById("resultText").textContent =
+        `${duration} • ${genre} • ${language} • ${vocals}`;
+    }
+  </script>
+
+</body>
+</html>
