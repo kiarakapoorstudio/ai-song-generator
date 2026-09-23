@@ -1,0 +1,319 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --black: #000000;
+  --surface: #090909;
+  --surface-2: #101010;
+  --border: #242424;
+  --border-light: #333333;
+  --white: #ffffff;
+  --gray-1: #aaaaaa;
+  --gray-2: #777777;
+  --gray-3: #4d4d4d;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav {
+  width: 100%;
+  height: 72px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+}
+
+.logo {
+  color: var(--white);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: var(--gray-1);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--white);
+}
+
+.nav-button {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 9px 16px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+main {
+  width: min(1000px, 92%);
+  margin: 90px auto 0;
+  text-align: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 15px;
+  color: var(--gray-1);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  margin-bottom: 25px;
+  background: var(--surface);
+}
+
+h1 {
+  font-size: clamp(45px, 8vw, 82px);
+  line-height: 0.95;
+  letter-spacing: -5px;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+.subtitle {
+  color: var(--gray-2);
+  font-size: 17px;
+  max-width: 650px;
+  margin: 0 auto 45px;
+  line-height: 1.7;
+}
+
+/* =========================
+   GENERATOR
+========================= */
+
+.generator {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 22px;
+  text-align: left;
+  box-shadow: 0 20px 80px rgba(255, 255, 255, 0.02);
+}
+
+.prompt-wrapper {
+  position: relative;
+}
+
+textarea {
+  width: 100%;
+  min-height: 170px;
+  resize: vertical;
+  background: #050505;
+  color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 20px;
+  padding-bottom: 45px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.6;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+textarea:focus {
+  border-color: #555;
+}
+
+textarea::placeholder {
+  color: var(--gray-3);
+}
+
+.char-count {
+  position: absolute;
+  bottom: 13px;
+  right: 16px;
+  color: var(--gray-3);
+  font-size: 12px;
+}
+
+/* =========================
+   OPTIONS
+========================= */
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.option label {
+  display: block;
+  color: var(--gray-2);
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+select {
+  width: 100%;
+  background: #050505;
+  color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: border 0.2s ease;
+}
+
+select:hover,
+select:focus {
+  border-color: #555;
+}
+
+/* =========================
+   GENERATE BUTTON
+========================= */
+
+.generate {
+  width: 100%;
+  margin-top: 16px;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.generate:hover {
+  background: #dddddd;
+  transform: translateY(-1px);
+}
+
+.generate:active {
+  transform: translateY(0);
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result {
+  display: none;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-2);
+}
+
+.result.show {
+  display: block;
+}
+
+.result-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.result-text {
+  color: var(--gray-2);
+  font-size: 14px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+  text-align: center;
+  color: var(--gray-3);
+  padding: 60px 20px 35px;
+  font-size: 13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+  nav {
+    padding: 0 5%;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  main {
+    margin-top: 60px;
+  }
+
+  h1 {
+    letter-spacing: -3px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .generator {
+    padding: 14px;
+    border-radius: 17px;
+  }
+
+  .options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 450px) {
+
+  .options {
+    grid-template-columns: 1fr;
+  }
+
+  textarea {
+    min-height: 150px;
+  }
+}
