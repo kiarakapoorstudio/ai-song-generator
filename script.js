@@ -1,5 +1,17 @@
-let user = JSON.parse(localStorage.getItem("sonaraUser")) || null;
+let user = null;
 let pendingGeneration = false;
+
+try {
+    const savedUser = localStorage.getItem("sonaraUser");
+
+    if (savedUser) {
+        user = JSON.parse(savedUser);
+    }
+} catch (error) {
+    console.warn("SONARA: Invalid saved user data. Resetting account.", error);
+    localStorage.removeItem("sonaraUser");
+    user = null;
+}
 
 
 /* =========================================
@@ -182,7 +194,8 @@ function openAuthModal() {
     if (!modal) return;
 
 
-    modal.classList.add("show");
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
 
 }
 
@@ -196,7 +209,8 @@ function closeAuthModal() {
     if (!modal) return;
 
 
-    modal.classList.remove("show");
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
 
 }
 
@@ -302,10 +316,23 @@ function handleLogin(event) {
      * Real authentication will be connected later.
      */
 
-    const savedUser =
-        JSON.parse(
-            localStorage.getItem("sonaraUser")
-        );
+    let savedUser = null;
+
+    try {
+
+        const savedUserRaw =
+            localStorage.getItem("sonaraUser");
+
+        if (savedUserRaw) {
+            savedUser = JSON.parse(savedUserRaw);
+        }
+
+    } catch (error) {
+
+        localStorage.removeItem("sonaraUser");
+        savedUser = null;
+
+    }
 
 
     if (savedUser) {
@@ -420,6 +447,21 @@ function showAuthMessage(message) {
             message;
 
     }
+
+}
+
+
+/* =========================================
+   CREDITS INFO
+========================================= */
+
+function showCreditsInfo() {
+
+    const credits = getCredits();
+
+    alert(
+        `You currently have ${credits} credits.`
+    );
 
 }
 
@@ -706,7 +748,8 @@ function openGenerationPage(song) {
     if (!page) return;
 
 
-    page.classList.add("show");
+    page.classList.add("active");
+    page.setAttribute("aria-hidden", "false");
 
 
     setText(
@@ -945,9 +988,16 @@ function startGeneration(songData) {
                 }
 
 
+                if (status) {
+
+                    status.textContent =
+                        "Your song is ready. Opening your song...";
+
+                }
+
+
                 /*
                  * IMPORTANT:
-                 *
                  * Redirect to song.html
                  */
 
@@ -1000,7 +1050,12 @@ function closeGenerationPage() {
     if (page) {
 
         page.classList.remove(
-            "show"
+            "active"
+        );
+
+        page.setAttribute(
+            "aria-hidden",
+            "true"
         );
 
     }
